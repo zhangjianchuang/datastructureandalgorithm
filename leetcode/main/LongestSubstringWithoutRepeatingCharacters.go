@@ -36,10 +36,10 @@ func maxSubString(str string) int {
 	s := []byte(str)
 	for j := 0; j < len(str); j++ {
 		// 先在数组中寻找上一次这个字符出现的位置，如果已经出现过，
-		i = maxNum(index[s[j]], i)
+		i = max(index[s[j]], i)
 		// 最大值就是 字符串当前遍历到的位置 - 上次重复出现的位置 + 1
 		// 意思就是把出现重复的字符以及之前的字符全部抛弃，剩下的长度
-		ans = maxNum(ans, j-i+1)
+		ans = max(ans, j-i+1)
 		// 记录当前字符出现的位置
 		index[s[j]] = j + 1
 	}
