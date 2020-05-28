@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	println(jump([]int{2,3,1,1,4}))
+	println(jump([]int{2, 3, 1, 1, 4}))
 }
 
 func canJump(nums []int) bool {
@@ -27,7 +27,7 @@ func jump(nums []int) int {
 	end := 0
 	maxPosition := 0
 	steps := 0
-	for i := 0; i < len(nums) -1; i++ {
+	for i := 0; i < len(nums)-1; i++ {
 		maxPosition = max(maxPosition, nums[i]+i)
 		if i == end {
 			end = maxPosition
@@ -35,10 +35,4 @@ func jump(nums []int) int {
 		}
 	}
 	return steps
-}
-func max(a, b int) int {
-	if a >= b {
-		return a
-	}
-	return b
 }

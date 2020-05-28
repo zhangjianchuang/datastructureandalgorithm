@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
 func main() {
-	fmt.Println(maxSubStr("asdfa"))
-	fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
-	fmt.Println(checkInclusion("123", "1323"))
+	//fmt.Println(maxSubStr(" "))
+	//fmt.Println(longestCommonPrefix([]string{"flower", "flow", "flight"}))
+	fmt.Println(checkInclusion("ab", "eidbaooo"))
 }
 
 func maxSubStr(str string) int {
@@ -31,7 +32,12 @@ func maxSubStr(str string) int {
 	}
 	return ans
 }
-
+func max(a, b int) int {
+	if a >= b {
+		return a
+	}
+	return b
+}
 func longestCommonPrefix(strs []string) string {
 	result := ""
 	if len(strs) == 0 {
@@ -51,21 +57,63 @@ func longestCommonPrefix(strs []string) string {
 	return result
 }
 func checkInclusion(s1 string, s2 string) bool {
-	//state := make([]bool,len(s1))
-	//for i := range s2 {
-	//	if s2[i] == s1[j] {
-	//		if j == len(s1)-1 {
-	//			return true
-	//		} else {
-	//			j++
-	//		}
-	//	} else {
-	//		if s2[i] == s1[0] {
-	//			j = 1
-	//		} else {
-	//			j = 0
-	//		}
-	//	}
-	//}
-	return false
+	if len(s1) == 0 || len(s2) == 0 || len(s1) > len(s2) {
+		return false
+	}
+	window1 := make([]int, 26)
+	window2 := make([]int, 26)
+	for i := range s1 {
+		println(s1[i])
+		println(s1[i] - 'a')
+		window1[s1[i]-'a']++
+		window2[s2[i]-'a']++
+	}
+	diff := make([]int, 26)
+	for i := range diff {
+		diff[i] = window2[i] - window1[i]
+	}
+	for i := len(s1); i < len(s2); i++ {
+		if same(diff) {
+			return true
+		}
+		diff[s2[i-len(s1)]-'a']--
+		diff[s2[i]-'a']++
+	}
+	return same(diff)
+}
+func same(diff []int) bool {
+	for i := range diff {
+		if diff[i] != 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func multiply(num1 string, num2 string) string {
+	if len(num1) == 0 || len(num2) == 0 {
+		return ""
+	}
+	if num1 == "0" || num2 == "0" {
+		return "0"
+	}
+	muls := make([]int, len(num1)+len(num2))
+	for i := len(num1) - 1; i >= 0; i-- {
+		for j := len(num2) - 1; j >= 0; j-- {
+			mul := int((num1[i] - '0') * (num2[j] - '0'))
+			mul += muls[i+j+1]
+			muls[i+j+1] = mul % 10
+			muls[i+j] += mul / 10
+		}
+	}
+	start := 0
+	for start < len(muls) && muls[start] == 0 {
+		start++
+	}
+	var r strings.Builder
+	for start < len(muls) {
+		r.WriteString(strconv.Itoa(muls[start]))
+		start++
+	}
+	return r.String()
 }
